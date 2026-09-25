@@ -6,7 +6,7 @@ const parts = [
   './content/kirish','./content/bob1','./content/bob2','./content/bob3','./content/bob4',
   './content/bob5','./content/bob6','./content/bob7','./content/bob8','./content/bob9',
   './content/bob10','./content/bob11','./content/bob12','./content/bob13',
-  './content/bob14','./content/bob15','./content/xulosa','./content/savollar','./content/ilovalar'
+  './content/bob14','./content/bob15','./content/baholash','./content/xulosa','./content/savollar','./content/ilovalar'
 ];
 let body = "";
 // Titul + mundarija taxminan 2 sahifa
@@ -50,6 +50,8 @@ tbody tr:nth-child(even) td { background:#EAF0F8; }
 .title { text-align:center; padding-top: 3cm; }
 .c { text-align:center; text-indent:0; } .b { font-weight:bold; }
 .cover { font-size: 30pt; color:#1F3864; text-align:center; margin: 2cm 0; }
+.g2 { background:#FBE2E2 !important; } .g3 { background:#FFF4D6 !important; } .g4 { background:#E5EDF8 !important; } .g5 { background:#E3F1E3 !important; }
+table.rub td { font-size:10.5pt; vertical-align:top; }
 .toc { text-indent:0; text-align:left; margin:0 0 2pt; }
 .toc.l1 { font-weight:bold; margin-top:5pt; } .toc.l2 { padding-left:0.6cm; } .toc.l3 { padding-left:1.2cm; }
 </style></head><body>${body}</body></html>`;

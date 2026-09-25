@@ -53,6 +53,7 @@ const parts = [
   './content/bob13',
   './content/bob14',
   './content/bob15',
+  './content/baholash',
   './content/xulosa',
   './content/savollar',
   './content/ilovalar'

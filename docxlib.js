@@ -140,9 +140,60 @@ function table(colWidths, headers, rows) {
     rows: [headerRow, ...bodyRows]
   });
 }
+// ---- Baholash (rubrika) jadvali: birlashtirilgan kataklar bilan ----
+function rubricCell(text, width, opts = {}) {
+  return new TableCell({
+    width: { size: width, type: WidthType.DXA },
+    rowSpan: opts.rowSpan || undefined,
+    verticalAlign: opts.vAlign || VerticalAlign.TOP,
+    shading: opts.shading ? { type: ShadingType.CLEAR, fill: opts.shading, color: "auto" } : undefined,
+    margins: { top: 50, bottom: 50, left: 90, right: 90 },
+    children: String(text).split("\n").map(line => new Paragraph({
+      alignment: opts.align || AlignmentType.LEFT,
+      spacing: { line: 252, after: 0 },
+      children: [new TextRun({ text: line, bold: !!opts.bold, size: opts.size || 20 })]
+    }))
+  });
+}
+function gradeLabel(g) {
+  return { 2: "2 (qoniqarsiz)", 3: "3 (qoniqarli)", 4: "4 (yaxshi)", 5: "5 (a'lo)" }[g] || String(g);
+}
+const GRADE_SHADE = { 2: "FBE2E2", 3: "FFF4D6", 4: "E5EDF8", 5: "E3F1E3" };
+function rubricTable(colWidths, headers, outcomes) {
+  const rows = [new TableRow({
+    tableHeader: true,
+    children: headers.map((h, i) => headerCell(h, colWidths[i]))
+  })];
+  for (const oc of outcomes) {
+    const totalRows = oc.indicators.reduce((a, ind) => a + ind.grades.length, 0);
+    let firstOfOutcome = true;
+    for (const ind of oc.indicators) {
+      let firstOfInd = true;
+      for (const g of ind.grades) {
+        const c = [];
+        if (firstOfOutcome) {
+          c.push(rubricCell(oc.outcome, colWidths[0], { rowSpan: totalRows, bold: true, vAlign: VerticalAlign.CENTER }));
+          firstOfOutcome = false;
+        }
+        if (firstOfInd) {
+          c.push(rubricCell(ind.name, colWidths[1], { rowSpan: ind.grades.length, vAlign: VerticalAlign.CENTER }));
+          firstOfInd = false;
+        }
+        c.push(rubricCell(g[1], colWidths[2], {}));
+        c.push(rubricCell(gradeLabel(g[0]), colWidths[3], { align: AlignmentType.CENTER, vAlign: VerticalAlign.CENTER, bold: true, shading: GRADE_SHADE[g[0]] }));
+        rows.push(new TableRow({ children: c }));
+      }
+    }
+  }
+  return new Table({
+    columnWidths: colWidths,
+    width: { size: colWidths.reduce((a, b) => a + b, 0), type: WidthType.DXA },
+    rows
+  });
+}
 const PB = () => new Paragraph({ children: [new PageBreak()] });
 
 module.exports = {
-  docx, P, H1, H2, H3, BUL, NUM, CAP, CENTER, SPACER, cell, makeTable, table, PB,
+  docx, P, H1, H2, H3, BUL, NUM, CAP, CENTER, SPACER, cell, makeTable, table, rubricTable, PB,
   startList, CONTENT_WIDTH: 9638
 };
